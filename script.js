@@ -84,7 +84,10 @@
   })
 
   cw3.addEventListener("click", function () {
-    //TODO
+    console.log("request sent...");
+    fetch("https://my-json-server.typicode.com/KVBAMusic/javascript2_0/posts")
+      .then(response => response.json())
+      .then(json => console.log(json))
   })
 
 })();
