@@ -13,33 +13,57 @@
         answer.innerHTML = JSON.stringify(array);
       })
   })
+
+  const createPost = (post) => {
+    const elem = document.createElement("div")
+    const title = document.createElement("h3");
+    const user = document.createElement("p");
+    const postid = document.createElement("p");
+    const text = document.createElement("p");
+    title.innerText = post.title;
+    user.innerText = `User ID: ${post.userId}`;
+    text.innerText = post.body;
+    postid.innerText = post.id;
   
-  cw1.addEventListener("click", function () {
+    elem.appendChild(postid);
+    elem.appendChild(title);
+    elem.appendChild(user);
+    elem.appendChild(text);
+    elem.appendChild(document.createElement("hr"))
+    return elem;
+  };
+
+  let id = 1;
+  
+  cw1.addEventListener("click", async function () {
     answer.innerText = "Loading..."
-    fetch(`https://jsonplaceholder.typicode.com/posts/`)
+    let newPost;
+    await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
       .then(response => response.json())
-      .then(array => {
+      .then(post => {
         id++;
         answer.innerHTML = "";
-        console.log(array)
-        for (let post of array) {
-          const elem = document.createElement("div")
-          const title = document.createElement("h3");
-          const user = document.createElement("p");
-          const postid = document.createElement("p");
-          const text = document.createElement("p");
-          title.innerText = post.title;
-          user.innerText = `User ID: ${post.userId}`;
-          text.innerText = post.body;
-          postid.innerText = post.id;
-
-          elem.appendChild(postid);
-          elem.appendChild(title);
-          elem.appendChild(user);
-          elem.appendChild(text);
-          answer.appendChild(elem);
-        }
-      })
+        console.log(post);
+        elem = createPost(post);
+        answer.appendChild(elem);
+        newPost = post;
+      });
+    answer.append("Processing...")
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      body: JSON.stringify({
+        userId: newPost.userId,
+        title: newPost.title,
+        body: newPost.body,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF=8',
+      },
+    })
+      .then(response => response.json())
+      .then(json => {
+        answer.innerText = `Dodano post o id ${json.id}`;
+      });
   })
 
   cw2.addEventListener("click", function () {
