@@ -2,3 +2,20 @@ html {
   height: 100%;
   width: 100%;
 }
+
+.post {
+  background-color: deepskyblue;
+  box-shadow: 5px 5px gray;
+  padding: 1%;
+  margin-bottom: 20px;
+}
+
+.post-title {
+  color: white;
+  padding-left: 5%;
+}
+
+.post-body {
+  color: white;
+  padding-left: 2%;
+}
