@@ -51,25 +51,26 @@
         elem = createPost(post);
         answer.appendChild(elem);
         newPost = post;
+        setTimeout(() => {
+          answer.append("Processing...")
+          fetch('https://jsonplaceholder.typicode.com/posts', {
+            method: 'POST',
+            body: JSON.stringify({
+              userId: newPost.userId,
+              title: newPost.title,
+              body: newPost.body,
+            }),
+            headers: {
+              'Content-type': 'application/json; charset=UTF=8',
+            },
+          })
+            .then(response => response.json())
+            .then(json => {
+              answer.innerText = `Dodano post o id ${json.id}`;
+            });
+        }, 2000) 
       });
-    answer.append("Processing...")
-    fetch('https://jsonplaceholder.typicode.com/posts', {
-      method: 'POST',
-      body: JSON.stringify({
-        userId: newPost.userId,
-        title: newPost.title,
-        body: newPost.body,
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF=8',
-      },
-    })
-      .then(response => response.json())
-      .then(json => {
-        answer.innerText = `Dodano post o id ${json.id}`;
-      });
-  })
-
+  });
   cw2.addEventListener("click", function () {
     alert("Loading...");
     fetch('https://jsonplaceholder.typicode.com/posts')
@@ -80,9 +81,9 @@
           answer.append(createPost(post));
           console.log(`id: ${post.id}\tuserId: ${post.userId}\ttitle: ${post.title}\tbody: ${post.body}`);
         }
-      })
-  })
-
+    })
+  });
+    
   cw3.addEventListener("click", function () {
     console.log("request sent...");
     fetch("https://my-json-server.typicode.com/KVBAMusic/javascript2_0/posts")
